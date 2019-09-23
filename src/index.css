@@ -1,0 +1,151 @@
+
+ 
+
+
+/* #repeatButton {
+  position: absolute;
+  top: 0px;
+  right: 0px; 
+  cursor: pointer;
+} */
+
+
+
+.icons { 
+  display: inline-block;
+  width: 128px;
+  height: 564px;
+  overflow: hidden;
+  background: #fff url('./images/symbols.png') repeat-y;
+  will-change: backgroundPosition;
+  transition: 0.3s background-position ease-in-out;
+  padding: 0 80px;
+  transform: translateZ(0);
+  
+}
+
+
+.icons:nth-child(2) {
+  margin: 0 10px;
+}
+
+* { box-sizing: border-box; }
+
+.spinner-container {
+  /* overflow: hidden;
+  height: 410px;  
+  padding: 2em;
+  transform: translate(0%, 0%) scale(1, 1); 
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  bottom: 10;
+  display: flex;
+  transition: 0.3s transform; */
+
+
+  overflow: hidden;
+  height: 410px;  
+  padding: 2em;
+  transform: translate(-50%, -50%) scale(.8, .8);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  transition: 0.3s transform;
+}
+
+.debugger{
+  /* transform: translate(-10%, -10%) scale(1,1); */
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  display: flex;
+  transition: 0.3s transform;
+
+}
+
+.app-wrap.winner-false {
+  animation: linear 1s spin;
+}
+
+/* red line  */
+/* .spinner-container::after {
+  position: absolute;
+  content: '';
+  display: block;
+  height: 180px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 30px;
+  left: 30px;
+  background: rgba(255, 0, 0, .1);  
+} */
+
+.gradient-fade {
+  position: absolute;
+  top: 32px;
+  right: 12px;
+  bottom: 0px;
+  left: 12px;
+  background: linear-gradient(
+    to bottom, 
+    rgba(64,64,64,1) 0%, 
+    rgba(64,64,64,0) 7%, 
+    rgba(64,64,64,0) 93%, 
+    rgba(64,64,64,1) 100%
+  );
+}
+
+/* @media screen and (max-width: 1000px) {
+  .spinner-container {
+    transform:  scale(.55, .55);
+  }
+}
+
+@media screen and (max-width: 100px) {
+  .spinner-container {
+    transform: scale(.4, .4);
+  }
+} */
+
+/* @media only screen and (min-width: 568px) {
+  html {
+    font-size: 10px;
+    font-size: 0.625rem; } }
+@media only screen and (min-width: 736px) {
+  html {
+    font-size: 12px;
+    font-size: 0.75rem; } }
+@media only screen and (min-width: 1024px) {
+  html {
+    font-size: 16px;
+    font-size: 1rem; } } */
+
+    @media screen and (max-width: 1000px) {
+      .spinner-container {
+        transform: translate(-50%, -50%) scale(.55, .55);
+      }
+    }
+    @media screen and (max-width: 500px) {
+      .spinner-container {
+        transform: translate(-50%, -50%) scale(.4, .4);
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
