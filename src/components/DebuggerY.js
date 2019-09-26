@@ -22,14 +22,14 @@ const useStyles = makeStyles(theme => ({
   }));
   
 
-let DebuggerY = (props) => {
+const DebuggerY = (props) => {
    
     
 
     const classes = useStyles();
     return (
         
-            <form className="dt" autoComplete="off">
+            <form className="dt ph4 pv2 v-mid" autoComplete="off">
                 <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="demo-controlled-open-select">{props.position}</InputLabel>
                 <Select
@@ -46,7 +46,7 @@ let DebuggerY = (props) => {
                     </MenuItem>
                     {
                         lines.map((line, index) => {
-                            return <MenuItem key={index} value={index}>{line.name}</MenuItem>
+                            return <MenuItem key={index} value={index+1}>{line.name}</MenuItem>
                         })
                     }
                 </Select>

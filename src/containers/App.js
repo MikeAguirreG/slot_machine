@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 import Reel from './Reel';
-import Spinner from '../components/Spinner'
-import { symbols, lines , something , sliders} from '../symbols'
+import Spinner from '../components/Spinner';
+import { symbols, lines , prizes , sliders} from '../symbols';
 
 // UI - components
-import Switches from '../components/Debugger'
-import Symbols from '../components/Options'
-import DebuggerY from '../components/DebuggerY'
-
-import { marks }  from '../symbols';
-
-
+import SwitchDebugger from '../components/Debugger';
+import Symbols from '../components/Options';
+import DebuggerY from '../components/DebuggerY';
+import BalanceArea from '../components/BalanceArea';
+import WinningLines from '../components/WinningLines';
+import PayTable from '../components/PayTable';
 
 
 
@@ -19,11 +18,15 @@ import { marks }  from '../symbols';
 
 class App extends Component {
   constructor(props) {
+
     super(props);
+
     this.handleChangeSelect = this.handleChangeSelect.bind(this);
     this.handleChangeSlider = this.handleChangeSlider.bind(this);
     this.finishHandler = this.finishHandler.bind(this)
     this.handleClick = this.handleClick.bind(this);
+    this.updateWinner = this.updateWinner.bind(this);
+
     this.state = {
       winner: null,
       debugMode: true,
@@ -33,63 +36,45 @@ class App extends Component {
       select1: '',
       select2: '',
       select3: '',
-      reil1: {
-        select: '', 
-        slider: 1
-      }
+      balance: 5000,
+      winnerLine: [],
+      vibrate : false
     }
     
- 
   }  
 
   handleClick = () => { 
     this.setState({ winner: null });
+    this.setState({ balance : this.state.balance -1})
+    this.setState({ winnerLine : []})
+    this.setState({ vibrate : true })
     this.emptyArray();
     this._child1.forceUpdateHandler();
     this._child2.forceUpdateHandler();
     this._child3.forceUpdateHandler();
     
-    if(this.state.debugMode){
-      
-      if(this.state.select1){
-        this._child1.setStartPosition(this.state.select1, this.state.slider1)
-      }
-      
-    }
-    console.log(this.state)
   }
 
 
   handleChangeSlider = name => (e, value) => {
-    this.setState({
-      [name]: value
-    });
-
-    this.setState({
-      debugs : [{
-        [name]: value
-      }]
-    })
-
-    this.setState({ reil1 : {
-      slider : value
-    }})
-    // console.log(this.state)
+    this.setState({ [name]: value });
   };
-
   
   handleChangeSelect = (event) => {
     this.setState({ [event.target.name]: event.target.value });
-    this.setState({ debugs : {
-      [event.target.name]: event.target.value
-
-    }})
-
-    this.setState({ reil1 : {
-      select : event.target.value
-    }})
   }
 
+  handleChangeBalance = (event) => {
+    this.setState({ balance : event.target.value})
+  }
+
+  updateWinner = (line) => {
+    var winnerLine = this.state.winnerLine;
+    winnerLine = winnerLine.concat(line);
+    this.setState({ winnerLine});
+  }
+  
+  
   
 
   debugMode = (event) => {
@@ -99,6 +84,7 @@ class App extends Component {
     }else{
       this.setState( { debugMode : true } )
     }
+    //this.setState({ debugMenu : event.target.checked })
    
   }
 
@@ -135,34 +121,53 @@ class App extends Component {
 
   finishHandler = (value) => {
     
-    let topLinePrice = 0;
-    let centerLinePrice = 0;
-    let bottomLinePrice = 0;
+    App.matches.push(value);
+    let imagePosition = (value)*-1;
     
-    App.matches.push(value);     
-    App.topLine.push((value)*-1)
-    App.centerLine.push((value)*-1 + 121)
-    App.bottomLine.push((value)*-1 + 222)
-
-    if (App.matches.length === 3) {
-       
-      //let some = Object.assign({}, [App.topLine], [App.centerLine] ,[App.bottomLine]  );
-      //console.log(some)
+    let sumCenterArray;
+    let sumBottomArray;
+    if(imagePosition < App.symbols.seven ){
+      sumCenterArray = 121;
+      sumBottomArray = 242;
+    }else if(imagePosition === 363){
+      sumCenterArray = 121;
+      sumBottomArray = -imagePosition;
+    }else{
+      sumCenterArray = -imagePosition;
+      sumBottomArray = -(imagePosition -121);
       
+    }
+
+  
+    App.topLine.push((imagePosition));
+    App.centerLine.push(((imagePosition) + sumCenterArray));
+    App.bottomLine.push(((imagePosition) + sumBottomArray));
+
+    if (App.topLine.length === 3) {
+       
       let totalWin = this.getPrices()
-      let totalWin2 = this.getPrices1()
-      // console.log('PRICE TOP ' +totalWin2)
+      if(totalWin>0){
+        let { balance } = this.state
+        this.setState({ balance : (parseInt(balance) + totalWin)});
+
+        //setTimeout(this.setState({ winnerLine : []}),1500)
+        
+      }
+
+      console.log('getPrizes1 ' +totalWin)
+      console.log(this.state.winnerLine)
+      console.log(this.state.winner)
 
 
       const { winner } = this.state;
       const first = App.matches[0];
       
       let results = App.matches.every(match => match === first)
-
-      //console.log(` results ${results}, appmatches  ${App.matches}`)
       this.setState({ winner: results });
+      this.setState({ vibrate : false });
     }
   }
+  
 
 
 
@@ -181,79 +186,61 @@ class App extends Component {
      * 
      */
 
-
-  getPrices = () =>  {
-
+  getPrices = () => {
+    let sumatories = [ App.topLine ,App.centerLine, App.bottomLine ]
+    let lookUp  =  Object.entries(prizes)
+    let totalPrize = 0;
     
-    let topLineWin = 0;
-    let sumTop = App.topLine.reduce((sum, x) => sum + x); // total sum
-    let barConcurrency  = App.topLine.filter(num => num === App.symbols.bar);
+   for(const [index, suma]  of sumatories.entries()){
+    let sumatorie =suma.reduce((sum, x) => sum + x)       // Sumatory Row
+    let triplet = suma.every(match => match === suma[0])  // Triplet Row
+    let barPair = suma.filter(num => num === App.symbols.bar); // BAR Pair
+    let cherry = suma.includes(App.symbols.cherry);
+    let seven = suma.includes(App.symbols.seven);
+    let prize = 0;
+   
+    for (const key of lookUp) {
 
+      //Check any triplets
 
-    if(barConcurrency.length ===1){
-      topLineWin = 0;
-
-    }else if(barConcurrency.length === 2){
-      topLineWin = 5;
-
-    }else if(App.topLine.every(match => match === App.topLine[0])){
+      if(((key[1].position * 3) === sumatorie)  && triplet){
       
-      topLineWin = symbols.map(element => {
-
-        // console.log("primera " +((element.position * 3) === sumTop))
-        // console.log("segundat " + App.topLine.every(match => match === element.position))
-
-        // Sum is equal to three element on top for each symbol.
-        if(((element.position * 3) === sumTop)  &&  App.topLine.every(match => match === element.position)){
-          return element.maxPrice
-        
+        if(key[1].tripletLineWin){
+          prize= key[1].tripletLineWin;
+          this.updateWinner(index)
+          console.log(`${key[1]} prize ${key[1].tripletLineWin}`)
+        }else if(key[1].topLineWin && index === 0){
+          prize=key[1].topLineWin;
+          this.updateWinner(index)
+          console.log(`${key[1]} prize ${key[1].topLineWin}`)
+        } else if(key[1].centerLineWin && index === 1){
+          prize= key[1].centerLineWin;
+          this.updateWinner(index)
+          console.log(`${key[1]} prize ${key[1].centerLineWin}`)
+        } else if(key[1].bottomLineWin && index === 2){
+          prize=key[1].bottomLineWin;
+          console.log(`${key[1]} prize ${key[1].bottomLineWin}`)
+          this.updateWinner(index)
         }
-        return 0;    
-         
-      })
-
-    
+      }
+      // Check BAR pair
+      if(key[1].pairAnyLine && barPair.length === 2){
+        prize=key[1].pairAnyLine;
+        this.updateWinner(index)
+        console.log(`${key[1]} prize ${key[1].pairAnyLine}`)
+      }
+      // Check Cherry/Seven combination
+      if(key[1].combinedSeven && cherry && seven){
+        prize = key[1].combinedSeven;
+        this.updateWinner(index)
+        console.log(`${key[1]} prize ${key[1].combinedSeven}`)
+      }
     }
-    //console.log('finalr '+ topLineWin)
-
-
-
-
-     
-
-   
-
-  }
-  getPrices1 = () => {
-    let topLineWin = 0;
-    let sumTop = App.topLine.reduce((sum, x) => sum + x);       // total sum values TOP
-    let sumCenter = App.centerLine.reduce((sum, x) => sum + x); // total sum values CENTER
-    let sumBottom = App.bottomLine.reduce((sum, x) => sum + x); // total sum valuer BOTTOM
-    let barConcurrency  = App.topLine.filter(num => num === App.symbols.bar);
-   
-
- //let lookUp = something['oneBar'].position *3;
- //let lookUp  =  Object.keys(something)
- //let lookUp  =  Object.values(something)
- let lookUp  =  Object.entries(something)//  
- lookUp.forEach(element => {
-
-   if(((element[1].position * 3) === sumTop)  && App.topLine.every(match => match === element[1].position)){
-
-    if(element[1].tripletLineWin){
-      console.log(element[1].tripletLineWin)
-    }else{
-      console.log(element[1].topLineWin)
-    }
+    totalPrize += prize;
      
    }
- 
-  });
- 
- 
-  //console.log(lookUp)
- return lookUp
-
+  console.log("Total " +totalPrize)
+  return totalPrize;
 
   }
 
@@ -264,39 +251,33 @@ class App extends Component {
     App.bottomLine = [];
 
   }
-  
-  componentDidMount(){
-  console.log(this.state)
 
-  }
-  
+  // componentWillUpdate() {
+  //   this.setState({ winnerLine : []})
+  // }
+ 
   render (){
 
-    const { winner } = this.state
-    const { debugMode } =  this.state
+    const { winner , debugMode, balance , winnerLine , vibrate} = this.state
     const { slider1, slider2, slider3 } = this.state;
     const { select1, select2, select3 } = this.state;
-    const { reil1 } = this.state;
     let selectsList = [ select1, select2, select3 ]
     let slidersList = [ slider1, slider2, slider3 ]
 
-   
-    // const {debugs } = this.state;
-    // console.log(debugs)
+    // Disable
+    let disabled =  winner !== null ? false : true;
+    let vibration =  vibrate !== false ? 'vibrate-' : '';
 
+    let winningSound = null;
     const getLoser = () => {       
       return App.loser[Math.floor(Math.random()*App.loser.length)]
     }
-    let repeatButton = null;
-    let winningSound = null;
-
-    if (winner !== null) {
-      repeatButton = <Spinner onClick={this.handleClick} />
-    }
+    let repeatButton = <Spinner onClick={this.handleClick} disabled={disabled} />
+    let debugSwitch =  <SwitchDebugger debug={this.debugMode} />
 
     let debugMenu = lines.map((line, index) => {
       return (
-        <div className="dtc">
+        <div key={index} className="dtc">
           <DebuggerY
             onChange={this.handleChangeSelect}
             disabled={this.state.debugMode}
@@ -315,24 +296,23 @@ class App extends Component {
       )
     })
 
+    let balanceArea = <div  className="dtc">
+                         <BalanceArea 
+                            balance={this.handleChangeBalance} 
+                            value={balance} 
+                            disabled={disabled} 
+
+                          />
+                      </div>
+
+    let lineSections = <WinningLines winnerLine={winnerLine} />
+
+    let payTable = <PayTable />
 
     // if (winner) {
     //   winningSound = <WinningSound />
     // }
-    
-    // let positioningLook = Object.entries(positioning)
-    // let options =positioningLook.map((line, x )=> {
-
-    //   return line[1].positioning.map((name, y) => {
-        
-    //       return(
-    //       <div className="dt">
-    //       <Options key={x + y} disabled={this.state.debugMode} name={line.name} ></Options>
-    //       </div>
-    //       )
-               
-    //         })
-    // })
+  
 
  
     
@@ -346,31 +326,41 @@ class App extends Component {
             ref={(child) => { this._child1 = child; }}
             timer="1000"
             debug={!debugMode}
-            selectReil={reil1.select}
-            sliderReil={reil1.slider}
+            selectReil={select1}
+            sliderReil={slider1}
+            vibrate={vibration+ "1"}
+       
           />
           <Reel key="Reel2"
             onFinish={this.finishHandler}
             ref={(child) => { this._child2 = child; }}
-            timer="1400"
-            debug={!debugMode} />
+            timer="1500"
+            debug={!debugMode} 
+            selectReil={select2}
+            sliderReil={slider2}
+            vibrate={vibration+ "2"}       
+            />
           <Reel key="Reel3" onFinish={this.finishHandler}
             ref={(child) => { this._child3 = child; }}
-            timer="2200"
-            debug={!debugMode} />
+            timer="2000"
+            debug={!debugMode}
+            selectReil={select3}
+            sliderReil={slider3}
+            vibrate={vibration+ "3"} 
+            />
           <div className="gradient-fade"></div>
+          {lineSections}
+         
         </div>
-        <div className="dt-row pa3 shadow-5 bg-dark-gray">
-          <div className="dt dt w-200">
-            {repeatButton}
+        <div className="pay-table">{payTable}</div>
+        <div className="debugger dt-row pa3 shadow-5 bg-dark-gray">
+          <div className="dt dt center w-200">
+            <div className="dtc v-mid pr2">{repeatButton}</div>
+            <div className="dtc v-mid">{balanceArea}</div> 
           </div>
-          <div className="dt dt w-200">
-            <div className="dtc v-mid pa3">
-              <Switches debug={this.debugMode} />
-            </div>
-            <div id="debugger" className="dtc v-mid pa3">
-              {debugMenu}
-            </div>
+          <div className="dt dt center w-200">
+            <div className="dtc v-mid ">{debugSwitch}</div>
+            <div id="debugger" className="dtc v-mid">{debugMenu}</div>
           </div>
         </div>
       </div>

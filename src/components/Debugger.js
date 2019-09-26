@@ -1,13 +1,17 @@
 import React from 'react';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
-let Debugger = (props) => {
+const Debugger = (props) => {
     return( 
-        <div className="dt">
-        <label className="pa1 ma0 lh-copy f6 pointer">
-            <input type="checkbox" onChange={props.debug}/>
-            Debug Mode
-        </label>
-        </div>
+        <FormControlLabel
+        value="bottom"
+        className="pa1 ma0 f6"
+        control={<Switch color="primary" />}
+        label="Debug Mode"
+        onChange={props.debug}
+        labelPlacement="bottom"
+      />
     );
 } 
 export default Debugger;

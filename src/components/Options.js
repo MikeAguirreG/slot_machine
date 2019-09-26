@@ -7,24 +7,28 @@ import { marks } from '../symbols'
 
 const useStyles = makeStyles(theme => ({
     root: {
-      width: 150,
-      fontSize: '0.5rem',
+      width: 200,
+      
+      
     },
     margin: {
       height: theme.spacing(0.5),
     },
-    thumb: {
-        boxShadow: '#ebebeb 0px 2px 2px',
-        '&:focus,&:hover,&$active': {
-          boxShadow: '#ccc 0px 2px 3px 1px'}}}));
+    label: {
+        fontSize: '0.1rem'
+    },
+          
+        
+        
+        }));
   
 
-let Symbols = (props) => {
+const Symbols = (props) => {
 
     const classes = useStyles();
 
         return(
-            <div className={'dtc pa2 '+ classes.root } >
+            <div className={'dt pl3 pr4 pt4 v-mid sliders '+ classes.root } >
                 <Typography id="discrete-slider" gutterBottom>
                     {/* {props.name} */}
                 </Typography>
@@ -39,6 +43,7 @@ let Symbols = (props) => {
                     marks={marks}
                     min={1}
                     max={5}
+                    
                 />
                 
             </div>

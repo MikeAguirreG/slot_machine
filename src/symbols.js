@@ -43,7 +43,7 @@ export let symbols = [
      */
 
 
-export let something = {
+export let prizes = {
   oneBar : {
     position :0,
     tripletLineWin : 10,
@@ -66,10 +66,59 @@ export let something = {
   },
   cherry : {
     position :484,
-    topLinePrize : 10,
-    centerLinePrize : 10,
-    bottomLinePrize : 10,
-    pairAnyLine : 5
+    topLineWin : 2000,
+    centerLineWin : 1000,
+    bottomLineWin : 4000,
+    combinedSeven : 75
+    
+  }
+
+}
+
+
+export let prizeObject = {
+  oneBar : {
+    position :0,
+    prize:{
+       tripletLineWin : 10,
+       pairAnyLine : 5
+      }
+   
+  },
+  twoBar : {
+    position :121,
+    prize:{
+      tripletLineWin : 20
+    }
+   
+    
+  },
+  threeBar : {
+    position :242,
+    prize:{
+      tripletLineWin : 50
+    }
+   
+    
+  },
+  seven : {
+    position :363,
+    prize:{
+      tripletLineWin : 150
+    }
+   
+    
+  },
+  cherry : {
+    position :484,
+    prize:{
+      topLineWin : 2000,
+      centerLineWin : 1000,
+      bottomLineWin : 4000,
+      combinedSeven : 75
+    }
+   
+    
     
   }
 
@@ -138,66 +187,4 @@ export let positioning =
   ];
 
 
-  
 
-  
-  
-  
-
-
-
-
-
-
-  // getPrices = () => {
-  //     // Combinations on top line
-  //     //var sum = App.matches.every(match => match === App.symbols.bar)
-  //     let sumCombination  =  [];
-  //     sumCombination.push.apply(sumCombination, [ App.topLine.reduce((sum, x) => sum + x), App.topLine.every(match => match === App.symbols.bar)])
-
-  //     //var bar = numbers.filter(item => item  == 0);
-  //     console.log( `Sum combinations ${sumCombination}`)
-  //     switch (sumCombination){
-  //       case [(App.symbols.bar * 3), true]:
-  //         console.log(` combinacion sum ${App.symbols.bar * 3}`)
-  //         return 10;
-  //       case (App.symbols.twoBar * 3):
-  //           console.log(` combinacion sum ${App.symbols.twoBar * 3}`)
-  //         return 20;
-  //       case (App.symbols.threeBar * 3):
-  //           console.log(` combinacion sum ${App.symbols.threeBar * 3}`)
-  //         return 50;
-  //       case (App.symbols.seven * 3):
-  //           console.log(` combinacion sum ${App.symbols.seven * 3}`)
-  //         return 150;
-  //       case (App.symbols.cherry * 3):
-  //           console.log(` combinacion sum ${App.symbols.cherry * 3}`)
-  //         return 2000;
-  //       case App.symbols.twoBar:
-  //       case App.symbols.threeBar:
-  //       case App.symbols.seven: 
-  //       case App.symbols.cherry:
-  //           if((App.topLine.filter(item => item).length() === 2)){
-  //             return 5;
-  //           }
-  //         return 5;
-
-  //       default : return 0;
-      
-  
-  //     }
-
-
-  // }
-
-
-
-
-/** Debugger Code */
-
- {/* <DebuggerY  onChange={this.handleChangeSelect} disabled={this.state.debugMode} value ={select1} name={"select1"}></DebuggerY>
-          <Options  onChange={this.handleChangeSlider(sliders[0].name)} value={slider1} disabled={this.state.debugMode}></Options>
-          <DebuggerY onChange={this.handleChangeSelect} disabled={this.state.debugMode} value ={select2} name={"select2"}></DebuggerY>
-          <Options  onChange={this.handleChangeSlider(sliders[1].name)} value={slider2} disabled={this.state.debugMode}></Options>
-          <DebuggerY onChange={this.handleChangeSelect} disabled={this.state.debugMode} value ={select3} name={"select3"}></DebuggerY>
-          <Options  onChange={this.handleChangeSlider(sliders[2].name)} value={slider3} disabled={this.state.debugMode}></Options> */}

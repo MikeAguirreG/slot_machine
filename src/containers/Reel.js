@@ -6,7 +6,7 @@ class Reel extends Component {
     this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.state = {
       position: 0,
-      lastPosition: null
+      lastPosition: null,
     }
   };
 
@@ -20,7 +20,7 @@ class Reel extends Component {
     }
 
     this.start = this.setStartPosition();
-    console.log("start"+this.start)
+    // console.log("start"+this.start)
 
     this.setState({
       position: this.start,
@@ -43,18 +43,18 @@ class Reel extends Component {
    
     if(this.props.debug && this.props.selectReil){
 
-      console.log("empiezo" +this.start)
-      return (this.start * Reel.iconHeight) * -1
+
+      // console.log(" result "+((this.props.sliderReil - this.props.selectReil) * Reel.iconHeight ))
+
+      return (((this.props.sliderReil - this.props.selectReil) * Reel.iconHeight ) * -1)
+      //  return (((this.props.selectReil -  this.props.sliderReil) * Reel.iconHeight ) * -1)
       
     }
     return ((Math.floor((Math.random() * 5))) * Reel.iconHeight) * -1;
   }
 
   moveBackground() {
-    // console.log(`Position ${this.state.position }`)
-    // console.log(`Speed ${this.speed }`)
-    // console.log(`Remaining ${ this.state.timeRemaining }`)
-    // console.log(`diFERENCE ${ this.state.position - this.speed }`)
+
     this.setState({
       position: this.state.position - this.speed,
       timeRemaining: this.state.timeRemaining - 100
@@ -66,10 +66,10 @@ class Reel extends Component {
     let { position } = this.state;
     const totalSymbols = 5;
     const maxPosition = (Reel.iconHeight * (totalSymbols - 1) * -1);
-    let moved = (this.props.timer / 100) * this.multiplier
+    let moved = ((this.props.timer / 100) * this.multiplier)
     let startPosition = this.start;
     let currentPosition = startPosition;
-    console.log(currentPosition)
+    
     for (let i = 0; i < moved; i++) {
       currentPosition -= Reel.iconHeight;
 
@@ -77,8 +77,12 @@ class Reel extends Component {
         currentPosition = 0;
       }
     }
-
+    //console.log(currentPosition)
+    //console.log(this.multiplier)
+    //this.setState
+//  console.log(current)
     this.props.onFinish(currentPosition);
+
     // console.log(`this is current position ${currentPosition}` )
   }
 
@@ -109,10 +113,11 @@ class Reel extends Component {
 
   render() {
     let { position, current } = this.state;
+
     // console.log(position)
 
     return (
-      <div className="icons"
+      <div className={'icons ' + this.props.vibrate}
         style={{ backgroundPosition: '0px ' + position + 'px' }}>
       </div>
 
