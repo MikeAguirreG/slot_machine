@@ -1,32 +1,3 @@
-export let symbols = [
-  
-    {
-      name : "bar",
-      position :0,
-      maxPrice : 10
-    },
-    {
-      name : "twoBar",
-      position :121,
-      maxPrice : 20
-    },
-    {
-      name : "threeBar",
-      position :242,
-      maxPrice : 30
-    },
-    {
-      name : "seven",
-      position :363,
-      maxPrice : 150
-    },
-    {
-      name : "cherry",
-      position :484,
-      maxPrice : 200
-    }
-
-]
 
   /**
      * 
@@ -76,54 +47,6 @@ export let prizes = {
 }
 
 
-export let prizeObject = {
-  oneBar : {
-    position :0,
-    prize:{
-       tripletLineWin : 10,
-       pairAnyLine : 5
-      }
-   
-  },
-  twoBar : {
-    position :121,
-    prize:{
-      tripletLineWin : 20
-    }
-   
-    
-  },
-  threeBar : {
-    position :242,
-    prize:{
-      tripletLineWin : 50
-    }
-   
-    
-  },
-  seven : {
-    position :363,
-    prize:{
-      tripletLineWin : 150
-    }
-   
-    
-  },
-  cherry : {
-    position :484,
-    prize:{
-      topLineWin : 2000,
-      centerLineWin : 1000,
-      bottomLineWin : 4000,
-      combinedSeven : 75
-    }
-   
-    
-    
-  }
-
-}
-
 export let lines = [ 
   {name: "Top Line",
    state : "select1",
@@ -141,27 +64,6 @@ export let sliders = [
   {name: "slider2"},
   {name: "slider3"},
 ]
-
-export let positioning = 
-  {
-    topLine : {
-      name : "Top Line",
-      positioning: ["left", "right", "side"]
-    },
-    centerLine : {
-      name : "Center Line",
-      row : "dtc",
-      positioning: ["left", "right", "side"]
-    },
-    bottomLine : {
-      name : "Bottom Line",
-      positioning: ["left", "right", "side"]
-    }
-    
-  }
-
-
-
 
   export let marks = [
     {

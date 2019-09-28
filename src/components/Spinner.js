@@ -13,15 +13,15 @@ const useStyles = makeStyles(theme => ({
 
 const Spinner = (props) => {
   const classes = useStyles();
-    return(
-      <div>
-        <Fab id='repeatButton' disabled={props.disabled} onClick={props.onClick} variant="extended" aria-label="delete" className={classes.fab}>
-        <NavigationIcon   className={classes.extendedIcon} />
+  return (
+    <div>
+      <Fab id='repeatButton' disabled={props.disabled} onClick={props.onClick} variant="extended" aria-label="delete" className={classes.fab}>
+        <NavigationIcon className={classes.extendedIcon} />
         Spin
       </Fab>
     </div>
-      
-    )
+
+  )
 }
 
 export default Spinner;

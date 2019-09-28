@@ -6,7 +6,7 @@ const Debugger = (props) => {
     return( 
         <FormControlLabel
         value="bottom"
-        className="pa1 ma0 f6"
+        className="pa2 ma0 f6"
         control={<Switch color="primary" />}
         label="Debug Mode"
         onChange={props.debug}
