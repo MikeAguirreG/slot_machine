@@ -252,7 +252,7 @@ class App extends Component {
 
     let debugMenu = lines.map((line, index) => {
       return (
-        <div key={index} className="dtc tc">
+        <td key={index}>
           <DebuggerY
             onChange={this.handleChangeSelect}
             disabled={this.state.debugMode}
@@ -267,7 +267,7 @@ class App extends Component {
             disabled={this.state.debugMode}
           >
           </Symbols>
-        </div>
+        </td>
       )
     })
 
@@ -345,16 +345,18 @@ class App extends Component {
           config={{ duration: 500 }}
         >
           {props => (
-          <div style={props} className="debugger dt  tc center pa1 shadow-5 br2 bg-dark-gray">
-          <div className="dt-row tc center">
-            <div className="dtc tc v-mid">{repeatButton}</div>
-            <div className="dtc tc v-mid">{balanceArea}</div>
-            <div className="dtc tc v-mid">{debugSwitch}</div>
-          </div>
-          <div className="dt-row tc center">
-            <div className="dtc tc v-mid">{debugMenu}</div>
-          </div>
-        </div>
+            <table style={props} className="tc center center pa1 shadow-5 br2 bg-dark-gray debugger">
+              <tr>
+                <td>{repeatButton}</td>
+                <td><div className="dtc tc v-mid">{balanceArea}</div></td>
+                <td><div className="dtc tc v-mid">{debugSwitch}</div></td>
+              </tr>
+              <tr className="">
+                {debugMenu}
+              </tr>
+            </table>
+
+       
      
          
         )}
