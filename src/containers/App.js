@@ -252,7 +252,7 @@ class App extends Component {
 
     let debugMenu = lines.map((line, index) => {
       return (
-        <div key={index} className="dtc">
+        <div key={index} className="dtc tc">
           <DebuggerY
             onChange={this.handleChangeSelect}
             disabled={this.state.debugMode}
@@ -335,39 +335,44 @@ class App extends Component {
           to={{ opacity: 1, marginTop: 0 }}
           config={{ duration: 500 }}
         >
-        {props => (
-          <div style= {props} className="pay-table">{payTable}</div>
-        )}
+          {props => (
+            <div style={props} className="pay-table">{payTable}</div>
+          )}
         </Spring>
         <Spring
-          from={{ opacity: 0, marginLeft: -500}}
-          to={{ opacity: 1, marginLeft: 0}}
+          from={{ opacity: 0, marginLeft: -500 }}
+          to={{ opacity: 1, marginLeft: 0 }}
           config={{ duration: 500 }}
         >
-        {props=>(
-          <div style={props} className="debugger w-300 dt-row pa1 shadow-5 br2 bg-dark-gray">
-          <div className="dt dt center">
-            <div className="dtc v-mid pr2">{repeatButton}</div>
-            <div className="dtc v-mid">{balanceArea}</div>
-            <div className="dtc v-mid ">{debugSwitch}</div>
+          {props => (
+          <div style={props} className="debugger dt  tc center pa1 shadow-5 br2 bg-dark-gray">
+          <div className="dt-row tc center">
+            <div className="dtc tc v-mid">{repeatButton}</div>
+            <div className="dtc tc v-mid">{balanceArea}</div>
+            <div className="dtc tc v-mid">{debugSwitch}</div>
           </div>
-          <div className="dt dt center">
-            <div className="dtc v-mid">{debugMenu}</div>
+          <div className="dt-row tc center">
+            <div className="dtc tc v-mid">{debugMenu}</div>
           </div>
         </div>
+     
+         
         )}
         </Spring>
-      </div>
+            </div>
 
-
-    )
-
-
-  }
+        
 
 
 
-
-}
-
-export default App;
+        )
+    
+    
+      }
+    
+    
+    
+    
+    }
+    
+    export default App;
