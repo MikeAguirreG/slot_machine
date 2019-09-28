@@ -13,7 +13,7 @@ import DebuggerY from '../components/DebuggerY';
 import BalanceArea from '../components/BalanceArea';
 import WinningLines from '../components/WinningLines';
 import PayTable from '../components/PayTable';
-import { Spring } from 'react-spring/renderprops'
+import { Spring } from 'react-spring/renderprops';
 
 class App extends Component {
   constructor(props) {

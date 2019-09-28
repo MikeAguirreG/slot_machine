@@ -29,7 +29,7 @@ const DebuggerY = (props) => {
   const classes = useStyles();
   return (
 
-    <form className="dt ph1 pv1 v-mid" >
+    <form className=" ph1 pv1 v-mid" >
       <FormControl className={classes.formControl}>
         <InputLabel htmlFor="demo-controlled-open-select">{props.position}</InputLabel>
         <Select
