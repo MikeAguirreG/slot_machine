@@ -14,6 +14,8 @@ class Reel extends Component {
     this.reset();
   };
 
+
+  // Reset for spinning
   reset() {
     if (this.timer) {
       clearInterval(this.timer);
@@ -30,14 +32,17 @@ class Reel extends Component {
     }, 100);
   }
 
-
+  // Size of every icon
   static iconHeight = 121;
   multiplier = Math.floor(Math.random() * (4 - 1) + 1);
+
+
   // Uncomment for default start
   // start = this.setStartPosition(); 
   speed = Reel.iconHeight * this.multiplier;
 
-  // Positioning Debugging
+  
+  // Handles dedugging depending of the switch otherwise spins the reels reandonly
   setStartPosition() {
     if (this.props.debug && this.props.selectReil) {
       return (((this.props.sliderReil - this.props.selectReil) * Reel.iconHeight) * -1)
@@ -46,15 +51,14 @@ class Reel extends Component {
   }
 
   moveBackground() {
-
     this.setState({
       position: this.state.position - this.speed,
       timeRemaining: this.state.timeRemaining - 100
     })
   }
 
+  // Throwing the position where the spinner lands
   getSymbolFromPosition() {
-    let { position } = this.state;
     const totalSymbols = 5;
     const maxPosition = (Reel.iconHeight * (totalSymbols - 1) * -1);
     let moved = ((this.props.timer / 100) * this.multiplier)
@@ -72,6 +76,7 @@ class Reel extends Component {
     this.props.onFinish(currentPosition);
   }
 
+  // Allows validation while spinning
   tick() {
     if (this.state.timeRemaining <= 0) {
       clearInterval(this.timer);
@@ -98,13 +103,11 @@ class Reel extends Component {
 
 
   render() {
-    let { position, current } = this.state;
+    let { position } = this.state;
     return (
       <div className={'icons br1 ' + this.props.vibrate}
         style={{ backgroundPosition: '0px ' + position + 'px' }}>
       </div>
-
-
     )
   }
 

@@ -14,12 +14,14 @@ const useStyles = makeStyles(theme => ({
 const Spinner = (props) => {
   const classes = useStyles();
   return (
-    <div>
-      <Fab id='repeatButton' disabled={props.disabled} onClick={props.onClick} variant="extended" aria-label="delete" className={classes.fab}>
-        <NavigationIcon className={classes.extendedIcon} />
-        Spin
-      </Fab>
-    </div>
+    <td>
+      <div>
+        <Fab id='repeatButton' disabled={props.disabled} onClick={props.onClick} variant="extended" aria-label="delete" className={classes.fab}>
+          <NavigationIcon className={classes.extendedIcon} />
+          Spin
+        </Fab>
+      </div>
+    </td>
 
   )
 }

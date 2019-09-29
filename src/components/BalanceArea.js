@@ -32,21 +32,23 @@ const BalanceArea = (props) => {
   });
 
   return (
-    <TextField
-      style={{ width: 110 }}
-      className={clsx(classes.margin, classes.textField)}
-      label="Coins"
-      variant="outlined"
-      value={values.numberformat}
-      onChange={props.balance}
-      disabled={props.disabled}
-      value={props.value}
-      id="outlined-adornment-amount"
-      InputProps={{
-        inputComponent: NumberFormatCustom, className: classes.input,
-        startAdornment: <InputAdornment position="start">$</InputAdornment>
-      }}
-    />
+    <td>
+      <TextField
+        style={{ width: 110 }}
+        className={clsx(classes.margin, classes.textField)}
+        label="Coins"
+        variant="outlined"
+        value={values.numberformat}
+        onChange={props.balance}
+        disabled={props.disabled}
+        value={props.value}
+        id="outlined-adornment-amount"
+        InputProps={{
+          inputComponent: NumberFormatCustom, className: classes.input,
+          startAdornment: <InputAdornment position="start">$</InputAdornment>
+        }}
+      />
+    </td>
   )
 
 

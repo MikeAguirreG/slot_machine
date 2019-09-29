@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+//UI - components
 import Reel from './Reel';
-import { lines, prizes, sliders } from '../store';
-import audioSlot from '../audios/reel.wav';
-import audioWin from '../audios/winner.wav';
-
-// UI - components
 import Spinner from '../components/Spinner';
 import SwitchDebugger from '../components/Debugger';
 import Symbols from '../components/Options';
@@ -13,7 +9,14 @@ import DebuggerY from '../components/DebuggerY';
 import BalanceArea from '../components/BalanceArea';
 import WinningLines from '../components/WinningLines';
 import PayTable from '../components/PayTable';
+import WinnerSign from '../components/WinnerSign';
+// Spring React
 import { Spring } from 'react-spring/renderprops';
+// Store 
+import audioSlot from '../audios/reel.wav';
+import audioWin from '../audios/winner.wav';
+import { lines, prizes, sliders } from '../store';
+
 
 class App extends Component {
   constructor(props) {
@@ -36,6 +39,7 @@ class App extends Component {
       select2: '',
       select3: '',
       balance: 5000,
+      totalWin: 0,
       winnerLine: [],
       winnerTable: [],
       vibrate: true
@@ -43,9 +47,11 @@ class App extends Component {
 
   }
 
+  // Handles Spin Buttom action.
   handleClick = () => {
     this.setState({ winner: null });
     this.setState({ balance: this.state.balance - 1 })
+    this.setState({ totalWin: 0 })
     this.setState({ winnerLine: [] })
     this.setState({ winnerTable: [] })
     this.setState({ vibrate: true })
@@ -53,46 +59,40 @@ class App extends Component {
     this._child1.forceUpdateHandler();
     this._child2.forceUpdateHandler();
     this._child3.forceUpdateHandler();
-
   }
 
-
+  // Handles chages in the slider on debug mode.
   handleChangeSlider = name => (e, value) => {
     this.setState({ [name]: value });
   };
 
+  // Handles vertical change on debug mode.
   handleChangeSelect = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  // Handles the change in the input balance.
   handleChangeBalance = (event) => {
     this.setState({ balance: event.target.value })
   }
 
+  // Updating states for winner lines in reels and pay table
   updateWinner = (line, prize) => {
     var winnerLine = this.state.winnerLine;
     winnerLine = winnerLine.concat(line);
     this.setState({ winnerLine });
+
     var winnerTable = this.state.winnerTable;
     winnerTable = winnerTable.concat(prize);
     this.setState({ winnerTable });
   }
 
-  updateWinnerTable = (line) => {
-
-  }
-
-
-
-
+  // Debug Mode Switch
   debugMode = (event) => {
-    if (event.target.checked) {
-      this.setState({ debugMode: false })
-    } else {
-      this.setState({ debugMode: true })
-    }
+    this.setState({ debugMode: !event.target.checked })
   }
 
+  // Image height values in the Reels 
   static symbols = {
     bar: 0,
     twoBar: 121,
@@ -101,38 +101,27 @@ class App extends Component {
     cherry: 484
   }
 
-
-  static loser = [
-    'Not quite',
-    'Stop gambling',
-    'Hey, you lost!',
-    'Ouch! I felt that',
-    'Don\'t beat yourself up',
-    'There goes the college fund',
-    'I have a cat. You have a loss',
-    'You\'re awesome at losing',
-    'Coding is hard',
-    'Don\'t hate the coder'
-  ];
-
+  // Positioning horizontal Arrays when spinning finishes.
   static topLine = []
   static centerLine = []
   static bottomLine = []
 
+
+  // Pushes values into arrays to get the positions of the figures
   finishHandler = (value) => {
 
     let imagePosition = (value) * -1;
     let sumCenterArray;
     let sumBottomArray;
     if (imagePosition < App.symbols.seven) {
-      sumCenterArray = 121;
-      sumBottomArray = 242;
-    } else if (imagePosition === 363) {
-      sumCenterArray = 121;
+      sumCenterArray = App.symbols.twoBar;
+      sumBottomArray = App.symbols.threeBar;
+    } else if (imagePosition === App.symbols.seven) {
+      sumCenterArray = App.symbols.twoBar;
       sumBottomArray = -imagePosition;
     } else {
       sumCenterArray = -imagePosition;
-      sumBottomArray = -(imagePosition - 121);
+      sumBottomArray = -(imagePosition - App.symbols.twoBar);
 
     }
     App.topLine.push((imagePosition));
@@ -141,13 +130,7 @@ class App extends Component {
 
     if (App.topLine.length === 3) {
 
-      let totalWin = this.getPrices()
-      if (totalWin > 0) {
-        let { balance } = this.state
-        this.setState({ balance: (parseInt(balance) + totalWin) });
-      }
-
-
+      this.getPrizes()
       this.setState({ winner: false });
       this.setState({ vibrate: false });
     }
@@ -158,6 +141,7 @@ class App extends Component {
 
 
   /**
+ *  Prizes Values
  * 
  *  3 CHERRY symbols on top line 2000
  *  3 CHERRY symbols on center line 1000
@@ -171,7 +155,8 @@ class App extends Component {
  * 
  */
 
-  getPrices = () => {
+  // Gets the prizes according the array lines setting balance's state.
+  getPrizes = () => {
     let sumatories = [App.topLine, App.centerLine, App.bottomLine]
     let lookUp = Object.entries(prizes)
     let totalPrize = 0;
@@ -222,34 +207,44 @@ class App extends Component {
       }
 
       totalPrize += prize;
-
     }
-    return totalPrize;
+    let { balance } = this.state
+    this.setState({ balance: (parseInt(balance) + totalPrize) });
+    this.setState({ totalWin: totalPrize })
 
   }
 
+  // Cleans arrays at spinning
   emptyArray = () => {
     App.topLine = [];
     App.centerLine = [];
     App.bottomLine = [];
 
   }
+
+
   render() {
 
-    const { winner, debugMode, balance, winnerLine, winnerTable, vibrate } = this.state
+    //States values
+    const { winner, debugMode, balance, winnerLine, winnerTable, vibrate, totalWin } = this.state
     const { slider1, slider2, slider3 } = this.state;
     const { select1, select2, select3 } = this.state;
     let selectsList = [select1, select2, select3]
     let slidersList = [slider1, slider2, slider3]
 
-    // Disable
+    // Switching OFF/ON components, animations, and sound effects.
     let disabled = winner !== null ? false : true;
     let vibration = vibrate !== false ? 'vibrate-' : '';
     let audioSlotItem = vibrate !== false ? <audio ref='audio_tag' src={audioSlot} autoPlay /> : '';
     let audioWinItem = winnerLine.length ? <audio ref='audio_tag' src={audioWin} autoPlay /> : '';
-    let repeatButton = <Spinner onClick={this.handleClick} disabled={disabled} />
-    let debugSwitch = <SwitchDebugger debug={this.debugMode} />
 
+    // Assigninig components to be render.
+    let repeatButton = <Spinner onClick={this.handleClick} disabled={disabled} />
+    let balanceArea = <BalanceArea balance={this.handleChangeBalance} value={balance} disabled={disabled}/>
+    let debugSwitch = <SwitchDebugger debug={this.debugMode} />
+    let lineSections = <WinningLines winnerLine={winnerLine} />
+    let payTable = <PayTable vibrate={winnerTable}  />
+    let winnerSign = <WinnerSign total={totalWin} winnerLine={winnerLine.length} />
     let debugMenu = lines.map((line, index) => {
       return (
         <td key={index}>
@@ -270,19 +265,6 @@ class App extends Component {
         </td>
       )
     })
-
-    let balanceArea = <div className="dtc">
-      <BalanceArea
-        balance={this.handleChangeBalance}
-        value={balance}
-        disabled={disabled}
-
-      />
-    </div>
-
-    let lineSections = <WinningLines winnerLine={winnerLine} />
-    let payTable = <PayTable vibrate={winnerTable} />
-
 
 
     return (
@@ -327,18 +309,11 @@ class App extends Component {
               {lineSections}
               {audioSlotItem}
               {audioWinItem}
+              {winnerSign}
             </div>
           )}
         </Spring>
-        <Spring
-          from={{ opacity: 0, marginTop: 500 }}
-          to={{ opacity: 1, marginTop: 0 }}
-          config={{ duration: 500 }}
-        >
-          {props => (
-            <div style={props} className="pay-table">{payTable}</div>
-          )}
-        </Spring>
+        <div className="pay-table">{payTable}</div>
         <Spring
           from={{ opacity: 0, marginLeft: -500 }}
           to={{ opacity: 1, marginLeft: 0 }}
@@ -346,35 +321,21 @@ class App extends Component {
         >
           {props => (
             <table style={props} className="tc center center pa1 shadow-5 br2 bg-dark-gray debugger">
-              <tr>
-                <td>{repeatButton}</td>
-                <td><div className="dtc tc v-mid">{balanceArea}</div></td>
-                <td><div className="dtc tc v-mid">{debugSwitch}</div></td>
-              </tr>
-              <tr className="">
-                {debugMenu}
-              </tr>
+              <tr>{repeatButton}{balanceArea}{debugSwitch}</tr>
+              <tr>{debugMenu}</tr>
             </table>
-
-       
-     
-         
-        )}
+          )}
         </Spring>
-            </div>
+      </div>
 
-        
+    )
+
+
+  }
 
 
 
-        )
-    
-    
-      }
-    
-    
-    
-    
-    }
-    
-    export default App;
+
+}
+
+export default App;
