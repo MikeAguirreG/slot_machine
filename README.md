@@ -1,6 +1,13 @@
-# slot_Machine
+# Slot Machine
 
-Interface 
+## Specifications
+
+This application has been deployed in Heroku under the following link:
+
+https://slot-machine-app-test.herokuapp.com
+
+
+### Interface 
 
 1. reels
 2. pay-table
@@ -8,14 +15,14 @@ Interface
 4. SPIN button. 
 5. Debug area
 
-Reels
+
+### Reels
 
 Slot machine has 3 reels, each having following 5 symbols in order: 3xBAR, BAR, 2xBAR, 7, CHERRY
 Only part of the reel is visible to user. There are horizontal win-lines on visible part of reel: top, center, bottom.
 
 
-
-Pay Table
+### Pay Table
 
 Table with combinations prizes, this table blinks and moves once on its corresponding value when the combination in one of the Reels has occured.
 
@@ -33,18 +40,17 @@ Prizes combinations:
      *  Any combination of CHERRY and 7 on any line 75 
 
 
-
-Balance 
+### Balance 
 
 Text-box showing the coin balance, it can be modified for debugging purposes on a range from 1 to 5000.
 
 
-Sping Button
+### Sping Button
 
 Press on SPIN button start spinning of all three reels. Each spin costs player 1 coin. 
 
 
-Debug Area
+### Debug Area
 
 It is posible to run the application in mode random and fixed, with the sencond one it is possible to set up the desire values with a select element which defines the verticall position where the user would like to set a specific value, each select has its own slider with the values to be set.
 
